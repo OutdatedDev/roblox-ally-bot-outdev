@@ -3,22 +3,14 @@
 # This is a free script, you can modify it and sell it, but you must give credit to outdateddev on github.
 # This script is not for malicious use, and is only for educational purposes.
 
-import math
 from pyexpat.errors import XML_ERROR_RECURSIVE_ENTITY_REF
+from turtle import update
 import requests
 import random
 import time
 import threading
 import os
 import sys
-import json
-import urllib.request
-import urllib.parse
-import urllib.error
-import http.cookiejar
-import re
-import string
-import math
 
 # 0import dotenv
 from dotenv import load_dotenv
@@ -49,30 +41,40 @@ csrfToken = ""
 def updatecsrf():
     global csrfToken
     try:
-        r = requests.get("https://www.roblox.com/home", cookies={".ROBLOSECURITY": cookie})
-        csrfToken = r.headers["x-csrf-token"]
+        csrfToken = requests.post('https://catalog.roblox.com/v1/catalog/items/details', cookies=cookie).headers["x-csrf-token"]
     except:
-        print("Failed to login, check your cookie")
-        sys.exit(0)
+        print("Failed to update csrf token")
     
     print("Logged in successfully")
 
 
-def spam():
+
+def groupally():
     while True:
         try:
-            id = random(10000000, 14000000)
-            r = requests.post("https://groups.roblox.com/v1/groups/" + group + "relationships/allies" + id, headers={"x-csrf-token": csrfToken}, cookies={".ROBLOSECURITY": cookie})
-            print("Sent ally request to " + id)
-            time.sleep(delay)
+            randomid = random.randint(10000000, 15000000)
+            cookies = {'.ROBLOSECURITY': cookie}
+
+            gathtoken = requests.post('https://auth.roblox.com/v2/logout', cookies=cookies)
+            token = gathtoken.headers['x-csrf-token']
+
+            headers = {'x-csrf-token': token}
+
+            sendally = requests.post(f'https://groups.roblox.com/v1/groups/{group}/relationships/allies/{randomid}', headers=headers, cookies=cookies)
+
+            if sendally.status_code == 200:
+                print(f'Ally sent to {randomid}')
+            elif sendally.status_code == 429:
+                print('Rate limited')
+            else:
+                print(f'Failed to send ally to {randomid}')
         except:
-            print("Failed to send ally request to " + id)
-            time.sleep(delay)
+            print("Failed to send ally")
+        time.sleep(int(delay))
 
 def main():
-    updatecsrf()
-    for i in range(threads):
-        threading.Thread(target=spam).start()
+    for i in range(1):
+        threading.Thread(target=groupally).start()
 
 if __name__ == "__main__":
     main()
