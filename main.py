@@ -1,80 +1,77 @@
-## roblox ally bot made by outdateddev on github
-# Spams ally bot to random group ids in roblox, can get you sales and members.
-# This is a free script, you can modify it and sell it, but you must give credit to outdateddev on github.
-# This script is not for malicious use, and is only for educational purposes.
+# roblox ally bot made by outdateddev on github
 
-from pyexpat.errors import XML_ERROR_RECURSIVE_ENTITY_REF
-from turtle import update
+import string
 import requests
-import random
+from random import randint, choice
 import time
 import threading
 import os
 import sys
+from discord import Webhook
+import aiohttp
 
-# 0import dotenv
+
 from dotenv import load_dotenv
 load_dotenv()
 
-# Config from .env file
+# config
 cookie = os.getenv('COOKIE')
 group = os.getenv('GROUP')
+allies = os.getenv('TYPE')
 delay = os.getenv('DELAY')
 threads = os.getenv('THREADS')
+type = os.getenv('TYPE')
+webhook = os.getenv('WEBHOOK')
 
-if cookie == None:
-    print("Please set COOKIE in .env file")
+if cookie == "":
+    print("Please set .roblosecurity cookie in .env file (COOKIE)")
     sys.exit(0)
-if group == None:
-    print("Please set GROUP in .env file")
+if group == "":
+    print("Please set the Group ID in .env file (GROUP)")
     sys.exit(0)
 if delay == None:
-    print("Please set DELAY in .env file")
-    sys.exit(0)
+    print("Delay not set, defaulting to 5 seconds.")
+    delay = 5
+if webhook == "":
+    print("Webhook not set, not sending webhook.")
 if threads == None:
-    print("Please set THREADS in .env file")
-    sys.exit(0)
-
-csrfToken = ""
-
-# Log-in via cookie/x-csrf-token
-def updatecsrf():
-    global csrfToken
-    try:
-        csrfToken = requests.post('https://catalog.roblox.com/v1/catalog/items/details', cookies=cookie).headers["x-csrf-token"]
-    except:
-        print("Failed to update csrf token")
-    
-    print("Logged in successfully")
-
-
+    print("Threads not set, defaulting to 1 thread")
+    threads = 1
+if type not in ['allies', 'enemies']:
+    print("Type not set or invalid, defaulting to allies.")
+    type = "allies"
 
 def groupally():
     while True:
         try:
-            randomid = random.randint(10000000, 15000000)
+            randomid = randint(15900000, 16010000)
             cookies = {'.ROBLOSECURITY': cookie}
 
-            gathtoken = requests.post('https://auth.roblox.com/v2/logout', cookies=cookies)
+            gathtoken = requests.post(
+                'https://auth.roblox.com/v2/logout', cookies=cookies)
             token = gathtoken.headers['x-csrf-token']
 
             headers = {'x-csrf-token': token}
 
-            sendally = requests.post(f'https://groups.roblox.com/v1/groups/{group}/relationships/allies/{randomid}', headers=headers, cookies=cookies)
+            sendally = requests.post(
+                f'https://groups.roblox.com/v1/groups/{group}/relationships/{allies}/{randomid}', headers=headers, cookies=cookies)
 
             if sendally.status_code == 200:
                 print(f'Ally sent to {randomid}')
             elif sendally.status_code == 429:
                 print('Rate limited')
             else:
-                print(f'Failed to send ally to {randomid}')
+                print(f'Failed to send {allies} request to {randomid}')
         except:
-            print("Failed to send ally")
+            print('Error')
         time.sleep(int(delay))
 
+
 def main():
-    for i in range(1):
+    for i in range(int(threads)):
         threading.Thread(target=groupally).start()
+
 
 if __name__ == "__main__":
     main()
+
