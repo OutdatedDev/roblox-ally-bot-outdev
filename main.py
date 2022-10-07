@@ -1,5 +1,4 @@
 # roblox ally bot made by outdateddev on github
-
 import string
 import requests
 from random import randint, choice
@@ -9,7 +8,6 @@ import os
 import sys
 from discord import Webhook
 import aiohttp
-
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -44,7 +42,7 @@ if type not in ['allies', 'enemies']:
 def groupally():
     while True:
         try:
-            randomid = randint(15900000, 16010000)
+            randint(15900000, 16010000)
             cookies = {'.ROBLOSECURITY': cookie}
 
             gathtoken = requests.post(
@@ -57,7 +55,7 @@ def groupally():
                 f'https://groups.roblox.com/v1/groups/{group}/relationships/{allies}/{randomid}', headers=headers, cookies=cookies)
 
             if sendally.status_code == 200:
-                print(f'Ally sent to {randomid}')
+                print(f'Ally sent to {randomid} | ')
             elif sendally.status_code == 429:
                 print('Rate limited')
             else:
@@ -66,12 +64,45 @@ def groupally():
             print('Error')
         time.sleep(int(delay))
 
-
 def main():
-    for i in range(int(threads)):
-        threading.Thread(target=groupally).start()
+    print("""\
 
+                ________          __ ________               
+                \_____  \  __ ___/  |\______ \   _______  __
+                 /   |   \|  |  \   __\    |  \_/ __ \  \/ /
+                /    |    \  |  /|  | |    `   \  ___/\   / 
+                \_______  /____/ |__|/_______  /\___  >\_/  
+                        \/                   \/     \/     
+
+
+                    """)
+    print("""\
+
+                  /$$$$$$  /$$ /$$                 /$$$$$$$              /$$    
+                 /$$__  $$| $$| $$                | $$__  $$            | $$    
+                | $$  \ $$| $$| $$ /$$   /$$      | $$  \ $$  /$$$$$$  /$$$$$$  
+                | $$$$$$$$| $$| $$| $$  | $$      | $$$$$$$  /$$__  $$|_  $$_/  
+                | $$__  $$| $$| $$| $$  | $$      | $$__  $$| $$  \ $$  | $$    
+                | $$  | $$| $$| $$| $$  | $$      | $$  \ $$| $$  | $$  | $$ /$$
+                | $$  | $$| $$| $$|  $$$$$$$      | $$$$$$$/|  $$$$$$/  |  $$$$/
+                |__/  |__/|__/|__/ \____  $$      |_______/  \______/    \___/  
+                                   /$$  | $$                                    
+                                  |  $$$$$$/                                    
+                                   \______/                                     
+
+
+                    """)
+    print(f"Starting {threads} threads")
+    print()
+    time.sleep(0.5)
+    print(f"Delay: {delay}")
+    print(f"Type: {type}")
+    print(f"Group: {group}")
+    time.sleep(1)
+    print()
+    for i in range(int(threads)):
+        t = threading.Thread(target=groupally)
+        t.start()
 
 if __name__ == "__main__":
     main()
-
