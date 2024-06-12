@@ -22,13 +22,9 @@ Check the .env file and make sure everything is correct.
 
 The roblox API only allows 5 ally requests from a cookie per hour.
 
-#### Is this against Roblox's TOS?
-
-No, Roblox allows these types of bots and you wont get banned for using this.
-
 #### How do I get a cookie?
 
-To do this, you must have a PC. Open any browser of your choice and open the developer tools or inspect element. Go to the application tab and then cookies. Find the cookie named .ROBLOSECURITY and copy the value. And no, we don't save/send your cookie anywhere.
+To do this, you must have a PC. Open any browser of your choice and open the developer tools or inspect element. Go to the application tab and then cookies. Find the cookie named .ROBLOSECURITY and copy the value. This doesn't save/send your cookie anywhere.
 
 
 ## Feedback
